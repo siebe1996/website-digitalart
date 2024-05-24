@@ -103,7 +103,28 @@ export const AuthProvider = ({ children }) => {
                 let user = await loginUser(email, password);
                 const token = user.jwtToken;
                 const userRoles = user.roles;
-                console.log("userRoles in signin", userRoles);
+                if (
+                    userRoles.includes("Admin") ||
+                    userRoles.includes("Exhibitor")
+                ) {
+                    console.log("userRoles in signin", userRoles);
+                    delete user.jwtToken;
+                    delete user.roles;
+                    await setSecureItemAsync("userToken", token);
+                    await setSecureItemAsync(
+                        "userRoles",
+                        JSON.stringify(userRoles)
+                    );
+                    await setSecureItemAsync("user", JSON.stringify(user));
+                    dispatch({
+                        type: "SIGN_IN",
+                        token: token,
+                        user: user,
+                        userRoles: userRoles,
+                    });
+                    return true;
+                }
+                /*console.log("userRoles in signin", userRoles);
                 delete user.jwtToken;
                 delete user.roles;
                 await setSecureItemAsync("userToken", token);
@@ -123,7 +144,7 @@ export const AuthProvider = ({ children }) => {
                         userRoles: userRoles,
                     });
                     return true;
-                }
+                }*/
             } catch (error) {
                 // Handle authentication errors
                 console.error("Authentication failed:", error);

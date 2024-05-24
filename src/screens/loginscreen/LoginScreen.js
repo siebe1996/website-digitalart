@@ -14,6 +14,7 @@ import ButtonComp from "../../components/buttoncomp/ButtonComp";
 import LabelTextInputComp from "../../components/labeltextinputcomp/LabelTextInputComp";
 import TitleBoxComp from "../../components/titleboxcomp/TitleBoxComp";
 import ContentViewComp from "../../components/contentviewcomp/ContentViewComp";
+import InvalidTextComp from "../../components/invalidtextcomp/InvalidTextComp";
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("");
@@ -45,6 +46,7 @@ const LoginScreen = () => {
             } catch (e) {
                 console.log("Something went wrong logging in:", e);
             }
+            console.log("loginSuccess", loginSuccess);
             if (loginSuccess) {
                 setLoading(false);
                 console.log("Login successful");
