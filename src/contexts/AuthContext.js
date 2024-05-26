@@ -124,27 +124,6 @@ export const AuthProvider = ({ children }) => {
                     });
                     return true;
                 }
-                /*console.log("userRoles in signin", userRoles);
-                delete user.jwtToken;
-                delete user.roles;
-                await setSecureItemAsync("userToken", token);
-                await setSecureItemAsync(
-                    "userRoles",
-                    JSON.stringify(userRoles)
-                );
-                await setSecureItemAsync("user", JSON.stringify(user));
-                if (
-                    userRoles.includes("Admin") ||
-                    userRoles.includes("Exhibitor")
-                ) {
-                    dispatch({
-                        type: "SIGN_IN",
-                        token: token,
-                        user: user,
-                        userRoles: userRoles,
-                    });
-                    return true;
-                }*/
             } catch (error) {
                 // Handle authentication errors
                 console.error("Authentication failed:", error);
