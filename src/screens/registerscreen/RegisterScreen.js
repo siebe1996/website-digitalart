@@ -140,17 +140,34 @@ const RegisterScreen = () => {
         }
     };
 
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+        return regex.test(password);
+    };
+
     const validateForm1 = () => {
         const newErrors = {};
-
         if (!email.trim()) {
             newErrors.email = "Email is required";
         }
-
-        if (!password1.trim() || password1 != password2) {
+        if (!validateEmail(email)) {
+            newErrors.email = "Give valid email";
+        }
+        if (!password1.trim() || password1 !== password2) {
             setPassword1("");
             setPassword2("");
-            newErrors.password = "Password is wrong";
+            newErrors.password = "Password is not same";
+        }
+        if (!validatePassword(password1)) {
+            setPassword1("");
+            setPassword2("");
+            newErrors.password =
+                "Password needs capital, number, special sign and longer then 6 chars";
         }
         return newErrors;
     };
@@ -221,7 +238,6 @@ const RegisterScreen = () => {
         let registerSuccess = true;
         try {
             console.log("jsonUserData", jsonUserData);
-            //await postUser(jsonUserData);
             registerSuccess = await signUp(jsonUserData);
         } catch (error) {
             console.error("Error posting user:", error);
@@ -230,6 +246,10 @@ const RegisterScreen = () => {
             setLoading(false);
             console.log("register successful");
         } else {
+            const newErrors = {};
+            newErrors.wrong = "Something went wrong";
+            setErrors(newErrors);
+            setLoading(false);
             console.error("Register failed");
         }
     };
@@ -374,6 +394,7 @@ const RegisterScreen = () => {
                     </Text>
                 </View>
                 {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                {errors.wrong && <InvalidTextComp text={errors.wrong} />}
             </ContentViewComp>
         </ScrollView>
     );
